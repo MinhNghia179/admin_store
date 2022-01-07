@@ -1,0 +1,41 @@
+.content-product {
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td,
+  th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 15px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  .list-icon {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    svg {
+      cursor: pointer;
+    }
+  }
+  .btn-add-product {
+    cursor: pointer;
+  }
+}
+
+.form-product {
+  .icon-close {
+    display: flex;
+    cursor: pointer;
+    justify-content: flex-end;
+    font-size: 25px;
+  }
+  label {
+    font-weight: 600;
+  }
+}
