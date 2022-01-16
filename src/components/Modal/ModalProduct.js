@@ -101,7 +101,7 @@ const ProductModal = (props) => {
                           <label>Category</label>
                           <Field name="categoryId" as="select" className={'form-control' + (errors.categoryId && touched.categoryId ? ' is-invalid' : '')}>
                               { listCategory && listCategory.map((category, index) => {
-                                  return <option key={index} value={category.categoryId}>{category.name}</option>
+                                  return <option key={index} value={category.categoryId}>{category.nameCa}</option>
                               }) }
                           </Field>
                           <ErrorMessage name="categoryId" component="div" className="invalid-feedback" />

@@ -99,7 +99,7 @@ function Product() {
                     {currentProducts.map((product, index) => (
                       <tr key={index}>
                         <td>{product.name || "N/A"}</td>
-                        <td>{product.categoryId || "N/A"}</td>
+                        <td>{product.nameCa || "N/A"}</td>
                         <td>{product.modelYear || "N/A"}</td>
                         <td>{product.price || "N/A"}</td>
                         <td>{product.description || "N/A"}</td>
