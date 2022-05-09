@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { BsXCircle } from "react-icons/bs";
-import axios from "axios";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { BsXCircle } from 'react-icons/bs';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { Col, Row } from 'react-bootstrap';
 
 const CustomerModal = (props) => {
   const { show, type, data } = props;
@@ -16,70 +17,73 @@ const CustomerModal = (props) => {
 
   const customStyles = {
     content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      width: "50%",
-      transform: "translate(-50%, -50%)",
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      width: '50%',
+      transform: 'translate(-50%, -50%)',
     },
   };
 
   const closeModal = () => {
     props.handleCloseModal();
   };
+
   return (
     <div className="modal-product">
       <Modal
         isOpen={show}
-        appElement={document.getElementById("root")}
+        appElement={document.getElementById('root')}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
       >
         <Formik
           initialValues={{
-            firstName: customer.firstName || "",
-            lastName: customer.lastName || "",
-            phone: customer.phone || "",
-            address: customer.address || "",
-            email: customer.email || "",
-            password: customer.password || "",
+            name: customer.name || '',
+            phone: customer.phone || '',
+            address: customer.address || '',
+            email: customer.email || '',
+            password: customer.password || '',
+            birthday: customer.birthday || 0,
+            display_name: customer.display_name || '',
           }}
           validationSchema={Yup.object().shape({
-            firstName: Yup.string().required("First name is required"),
-            lastName: Yup.string().required("Last name is required"),
-            phone: Yup.string().required("Phone is required"),
-            address: Yup.string().required("Address is required"),
-            email: Yup.string().required("Email is required"),
-            password: Yup.string().required("Password is required")
+            name: Yup.string().required('Name is required'),
+            phone: Yup.string().required('Phone is required'),
+            address: Yup.string().required('Address is required'),
+            email: Yup.string().required('Email is required'),
+            password: Yup.string().required('Password is required'),
+            birthday: Yup.string().required('Birthday is required'),
+            display_name: Yup.string().required('Display name is required'),
           })}
           onSubmit={(fields) => {
             const valueFields = {
-              ...fields
+              ...fields,
             };
-            if (type === "Add") {
+            if (type === 'Add') {
               axios
                 .post(`http://localhost:5000/customer/add`, valueFields)
                 .then((res) => {
-                  props.handleCloseModal();
-                  toast.success("Thêm sản phẩm thành công!");
+                  closeModal();
+                  toast.success('Thêm sản phẩm thành công!');
                 })
                 .catch((error) => {
-                  toast.error(error || "Thêm sản phẩm không thành công!");
+                  toast.error(error || 'Thêm sản phẩm không thành công!');
                 });
-            } else if (type === "Edit") {
+            } else if (type === 'Edit') {
               axios
                 .put(
                   `http://localhost:5000/customer/update/${customer.customerId}`,
                   valueFields
                 )
                 .then((response) => {
-                  props.handleCloseModal();
-                  toast.success("Sủa sản phẩm thành công !");
+                  closeModal();
+                  toast.success('Sủa sản phẩm thành công !');
                 })
                 .catch((error) => {
-                  toast.error(error || "Sửa sản phẩm không thành công");
+                  toast.error(error || 'Sửa sản phẩm không thành công');
                 });
             }
           }}
@@ -90,116 +94,154 @@ const CustomerModal = (props) => {
                 <div className="form-group col-12 icon-close">
                   <BsXCircle onClick={closeModal} />
                 </div>
-                <div className="form-group col-12">
-                  <label htmlFor="name">First Name</label>
-                  <Field
-                    name="firstName"
-                    type="text"
-                    className={
-                      "form-control" +
-                      (errors.firstName && touched.firstName ? " is-invalid" : "")
-                    }
-                  />
-                  <ErrorMessage
-                    name="firstName"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                </div>
-                <div className="form-group col-12">
-                  <label htmlFor="modelYear">Last Name</label>
-                  <Field
-                    name="lastName"
-                    type="text"
-                    className={
-                      "form-control" +
-                      (errors.lastName && touched.lastName
-                        ? " is-invalid"
-                        : "")
-                    }
-                  />
-                  <ErrorMessage
-                    name="lastName"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                </div>
-                <div className="form-group col-12">
-                  <label htmlFor="price">Phone</label>
-                  <Field
-                    name="phone"
-                    type="text"
-                    className={
-                      "form-control" +
-                      (errors.phone && touched.phone ? " is-invalid" : "")
-                    }
-                  />
-                  <ErrorMessage
-                    name="phone"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                </div>
-                <div className="form-group col-12">
-                  <label htmlFor="description">Address</label>
-                  <Field
-                    name="address"
-                    type="text"
-                    className={
-                      "form-control" +
-                      (errors.address && touched.address
-                        ? " is-invalid"
-                        : "")
-                    }
-                  />
-                  <ErrorMessage
-                    name="address"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                </div>
-                <div className="form-group col-12">
-                  <label htmlFor="color">Email</label>
-                  <Field
-                    name="email"
-                    type="text"
-                    className={
-                      "form-control" +
-                      (errors.email && touched.email ? " is-invalid" : "")
-                    }
-                  />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                </div>
-                <div className="form-group col-12">
-                  <label htmlFor="evaluate">Password</label>
-                  <Field
-                    name="password"
-                    type="text"
-                    className={
-                      "form-control" +
-                      (errors.password && touched.password ? " is-invalid" : "")
-                    }
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="invalid-feedback"
-                  />
-                </div>
+                <Row>
+                  <Col className="form-group col-12">
+                    <label htmlFor="name">Name</label>
+                    <Field
+                      name="name"
+                      type="text"
+                      className={
+                        'form-control' +
+                        (errors.name && touched.name ? ' is-invalid' : '')
+                      }
+                    />
+                    <ErrorMessage
+                      name="name"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                <hr />
+                <Row>
+                  <Col className="form-group col-12">
+                    <label htmlFor="modelYear">Phone</label>
+                    <Field
+                      name="phone"
+                      type="text"
+                      className={
+                        'form-control' +
+                        (errors.phone && touched.phone ? ' is-invalid' : '')
+                      }
+                    />
+                    <ErrorMessage
+                      name="phone"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                <hr />
+                <Row>
+                  <Col className="form-group col-12">
+                    <label htmlFor="price">Address</label>
+                    <Field
+                      name="address"
+                      type="text"
+                      className={
+                        'form-control' +
+                        (errors.address && touched.address ? ' is-invalid' : '')
+                      }
+                    />
+                    <ErrorMessage
+                      name="address"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                <hr />
+                <Row>
+                  <Col className="form-group col-12">
+                    <label htmlFor="description">Email</label>
+                    <Field
+                      name="email"
+                      type="text"
+                      className={
+                        'form-control' +
+                        (errors.email && touched.email ? ' is-invalid' : '')
+                      }
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                <hr />
+                <Row>
+                  <Col className="form-group col-12">
+                    <label htmlFor="color">BirthDay</label>
+                    <Field
+                      name="birthday"
+                      type="text"
+                      className={
+                        'form-control' +
+                        (errors.birthday && touched.birthday
+                          ? ' is-invalid'
+                          : '')
+                      }
+                    />
+                    <ErrorMessage
+                      name="birthday"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                <hr />
+                <Row>
+                  <Col className="form-group col-12">
+                    <label htmlFor="evaluate">Display Name</label>
+                    <Field
+                      name="display_name"
+                      type="text"
+                      className={
+                        'form-control' +
+                        (errors.display_name && touched.display_name
+                          ? ' is-invalid'
+                          : '')
+                      }
+                    />
+                    <ErrorMessage
+                      name="display_name"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
+                <hr />
+                <Row>
+                  <Col className="form-group col-12">
+                    <label htmlFor="evaluate">Password</label>
+                    <Field
+                      name="password"
+                      type="text"
+                      className={
+                        'form-control' +
+                        (errors.password && touched.password
+                          ? ' is-invalid'
+                          : '')
+                      }
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </Col>
+                </Row>
                 <div className="form-group col-12 mt-3">
                   <button type="submit" className="btn btn-primary mr-2">
-                    {type === "Add" ? "Add New" : "Edit Customer"}
+                    {type === 'Add' ? 'Add New' : 'Edit Customer'}
                   </button>
-                  {type === "Add" ? (
+                  {type === 'Add' ? (
                     <button type="reset" className="btn btn-secondary">
                       Reset
                     </button>
                   ) : (
-                    ""
+                    ''
                   )}
                 </div>
               </div>
